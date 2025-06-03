@@ -1,7 +1,7 @@
 <section>
     <div class="container">
         <div class="row mt-4">
-            <a href="/admin/add-product" class="btn btn-success ml-auto">Add product</a>
+            <a href="/admin/add-products" class="btn btn-success ml-auto">Add product</a>
         </div>
         <table class="table mt-5">
   <thead>
@@ -17,10 +17,10 @@
     {{#each products}}
     <tr>
       <th scope="row">1</th>
-      <td>{{this.name}}</td>
-      <td>{{this.category}}</td>
-      <td>{{this.description}}</td>
-      <td><img style="width:50px;height:50px" src="{{this.images}}"</td>
+      <td>{{this.Name}}</td>
+      <td>{{this.Category}}</td>
+      <td>{{this.Description}}</td>
+      <td><img style="width:50px;height:50px" src="/product-images/{{this._id}}.jpg"></td>
     </tr>
     {{/each}}
   </tbody>
