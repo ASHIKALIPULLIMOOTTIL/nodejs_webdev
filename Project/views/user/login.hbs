@@ -9,6 +9,9 @@
     <div class="container mt-5">
         <h2 class="text-center mb-4">Login</h2>
         <form action="/login" method="POST" class="mx-auto" style="max-width: 400px;">
+           {{#if loginErr}}
+              <p class="error">Invalid username or password</p>
+           {{/if}}
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" name="email" class="form-control" id="email" required>
