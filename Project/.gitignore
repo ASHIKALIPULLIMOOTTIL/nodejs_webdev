@@ -1,0 +1,13 @@
+# dependencies (reinstall with `npm install`)
+node_modules/
+
+# environment variables / secrets
+.env
+
+# logs
+*.log
+npm-debug.log*
+
+# OS / editor files
+.DS_Store
+.vscode/
