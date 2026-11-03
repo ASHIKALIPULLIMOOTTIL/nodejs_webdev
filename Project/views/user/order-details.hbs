@@ -1,0 +1,50 @@
+<section>
+    <div class="container mt-5">
+        {{#if placed}}
+        <div class="alert alert-success">Your order has been placed successfully.</div>
+        {{/if}}
+        <h3>Order Details</h3>
+        <p class="text-muted">
+            Placed on {{date order.date}} ·
+            <span class="badge badge-{{statusClass order.status}} text-capitalize">{{order.status}}</span>
+        </p>
+
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each order.products}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{money this.price}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>{{money this.subtotal}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <h5 class="text-right">Total: {{money order.totalAmount}}</h5>
+
+        <h5 class="mt-4">Delivery to</h5>
+        <p>
+            {{order.delivery.name}}<br>
+            {{order.delivery.address}}<br>
+            Pincode: {{order.delivery.pincode}}<br>
+            Mobile: {{order.delivery.mobile}}
+        </p>
+        <p>Payment: Cash on Delivery</p>
+
+        {{#if (eq order.status "placed")}}
+        <form action="/orders/{{order._id}}/cancel" method="post" onsubmit="return confirm('Cancel this order?')">
+            <button class="btn btn-outline-danger">Cancel Order</button>
+        </form>
+        {{/if}}
+        <a href="/orders" class="btn btn-link mt-3 px-0">← Back to my orders</a>
+    </div>
+</section>

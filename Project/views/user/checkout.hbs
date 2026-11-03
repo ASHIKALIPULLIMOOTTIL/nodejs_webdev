@@ -1,0 +1,54 @@
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-7">
+                <h3>Delivery Details</h3>
+                {{#if checkoutErr}}
+                <div class="alert alert-danger">{{checkoutErr}}</div>
+                {{/if}}
+                <form action="/checkout" method="post" class="mt-3">
+                    <div class="form-group">
+                        <label for="name">Full name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="{{delivery.name}}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea name="address" id="address" class="form-control" rows="3" required>{{delivery.address}}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="pincode">Pincode</label>
+                            <input type="text" name="pincode" id="pincode" class="form-control" value="{{delivery.pincode}}"
+                                pattern="\d{6}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="mobile">Mobile</label>
+                            <input type="tel" name="mobile" id="mobile" class="form-control" value="{{delivery.mobile}}"
+                                pattern="\d{10}" required>
+                        </div>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="payment" id="cod" value="COD" checked>
+                        <label class="form-check-label" for="cod">Cash on Delivery</label>
+                    </div>
+                    <button type="submit" class="btn btn-success">Confirm Order</button>
+                </form>
+            </div>
+            <div class="col-md-5">
+                <h3>Order Summary</h3>
+                <ul class="list-group mt-3">
+                    {{#each items}}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>{{this.product.Name}} × {{this.quantity}}</span>
+                        <span>{{money this.subtotal}}</span>
+                    </li>
+                    {{/each}}
+                    <li class="list-group-item d-flex justify-content-between font-weight-bold">
+                        <span>Total</span>
+                        <span>{{money total}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

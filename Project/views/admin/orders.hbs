@@ -1,0 +1,46 @@
+<section>
+    <div class="container mt-4">
+        <h3>All Orders</h3>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Items</th>
+                    <th scope="col">Delivery</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td>{{date this.date}}</td>
+                    <td>{{this.user.username}}<br><small class="text-muted">{{this.user.email}}</small></td>
+                    <td>
+                        {{#each this.products}}
+                        <div>{{this.name}} × {{this.quantity}}</div>
+                        {{/each}}
+                    </td>
+                    <td>
+                        <small>{{this.delivery.name}}<br>{{this.delivery.address}}<br>{{this.delivery.pincode}} · {{this.delivery.mobile}}</small>
+                    </td>
+                    <td>{{money this.totalAmount}}</td>
+                    <td>
+                        <form action="/admin/orders/{{this._id}}/status" method="post" class="form-inline">
+                            <select name="status" class="form-control form-control-sm mr-1">
+                                {{#each ../statuses}}
+                                <option value="{{this}}" {{#if (eq this ../status)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </select>
+                            <button class="btn btn-sm btn-outline-primary">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {{else}}
+                <tr><td colspan="6" class="text-center text-muted">No orders yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

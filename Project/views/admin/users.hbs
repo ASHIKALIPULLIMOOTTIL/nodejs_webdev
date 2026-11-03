@@ -1,0 +1,27 @@
+<section>
+    <div class="container mt-4">
+        <h3>All Users</h3>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <th scope="row">{{inc @index}}</th>
+                    <td>{{this.username}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{date this.createdAt}}</td>
+                </tr>
+                {{else}}
+                <tr><td colspan="4" class="text-center text-muted">No users yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

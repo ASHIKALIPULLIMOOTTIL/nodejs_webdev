@@ -1,1 +1,52 @@
-<h3>Cart is empty</h3>
+<section>
+    <div class="container mt-5">
+        <h3>Your Cart</h3>
+        {{#if items.length}}
+        <table class="table mt-4 align-middle">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each items}}
+                <tr>
+                    <td>
+                        <img style="width:50px;height:50px;object-fit:cover" src="/product-images/{{this.item}}.jpg" alt="">
+                        {{this.product.Name}}
+                    </td>
+                    <td>{{money this.product.Price}}</td>
+                    <td>
+                        <form action="/cart/change/{{this.item}}" method="post" class="d-inline">
+                            <input type="hidden" name="change" value="-1">
+                            <button class="btn btn-sm btn-outline-secondary">−</button>
+                        </form>
+                        <span class="mx-2">{{this.quantity}}</span>
+                        <form action="/cart/change/{{this.item}}" method="post" class="d-inline">
+                            <input type="hidden" name="change" value="1">
+                            <button class="btn btn-sm btn-outline-secondary">+</button>
+                        </form>
+                    </td>
+                    <td>{{money this.subtotal}}</td>
+                    <td>
+                        <form action="/cart/remove/{{this.item}}" method="post">
+                            <button class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div class="text-right">
+            <h4>Total: {{money total}}</h4>
+            <a href="/checkout" class="btn btn-success mt-2">Place Order</a>
+        </div>
+        {{else}}
+        <p class="mt-4">Your cart is empty. <a href="/">Continue shopping</a></p>
+        {{/if}}
+    </div>
+</section>

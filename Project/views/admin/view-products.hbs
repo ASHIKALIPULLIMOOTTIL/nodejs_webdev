@@ -1,29 +1,42 @@
 <section>
     <div class="container">
-        <div class="row mt-4">
-            <a href="/admin/add-products" class="btn btn-success ml-auto">Add product</a>
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h3>Products</h3>
+            <a href="/admin/add-product" class="btn btn-success">Add product</a>
         </div>
-        <table class="table mt-5">
-  <thead>
-    <tr>
-      <th scope="col">No</th>
-      <th scope="col">Title</th>
-      <th scope="col">Category</th>
-      <th scope="col">Description</th>
-      <th scope="col">Image</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each products}}
-    <tr>
-      <th scope="row">1</th>
-      <td>{{this.Name}}</td>
-      <td>{{this.Category}}</td>
-      <td>{{this.Description}}</td>
-      <td><img style="width:50px;height:50px" src="/product-images/{{this._id}}.jpg"></td>
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Image</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <th scope="row">{{inc @index}}</th>
+                    <td>{{this.Name}}</td>
+                    <td>{{this.Category}}</td>
+                    <td>{{money this.Price}}</td>
+                    <td>{{this.Description}}</td>
+                    <td><img style="width:50px;height:50px;object-fit:cover" src="/product-images/{{this._id}}.jpg" alt=""></td>
+                    <td class="text-nowrap">
+                        <a href="/admin/edit-product/{{this._id}}" class="btn btn-sm btn-primary">Edit</a>
+                        <form action="/admin/delete-product/{{this._id}}" method="post" class="d-inline"
+                            onsubmit="return confirm('Delete {{this.Name}}?')">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {{else}}
+                <tr><td colspan="7" class="text-center text-muted">No products yet.</td></tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </section>

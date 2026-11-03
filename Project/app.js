@@ -20,19 +20,35 @@ var session = require('express-session')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 //layout setup
-app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
+app.engine('hbs',hbs.engine({
+  extname:'hbs',
+  defaultLayout:'layout',
+  layoutsDir:__dirname+'/views/layout/',
+  partialsDir:__dirname+'/views/partials/',
+  helpers:{
+    inc:(n)=>n+1,
+    eq:(a,b)=>String(a)===String(b),
+    concat:(...args)=>args.slice(0,-1).join(''),
+    money:(n)=>'₹'+(Number(n)||0).toFixed(2),
+    date:(d)=>d?new Date(d).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}):'',
+    statusClass:(s)=>({placed:'primary',shipped:'info',delivered:'success',cancelled:'secondary'})[s]||'light'
+  }
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret:"key",cookie:{maxAge:600000}}))
-app.use(fileUpload());
-db.connect((err)=>{
-   if (err) {console.log('connection error'+err)}
-   else {console.log('database connected to port 27017')}
-    
-})
+app.use(session({
+  secret:process.env.SESSION_SECRET||'dev-only-change-me',
+  resave:false,
+  saveUninitialized:false,
+  cookie:{maxAge:24*60*60*1000}
+}))
+app.use(fileUpload({limits:{fileSize:5*1024*1024}}));
+db.connect()
+  .then(()=>console.log('database connected'))
+  .catch((err)=>console.log('connection error '+err))
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 

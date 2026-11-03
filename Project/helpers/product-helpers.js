@@ -1,22 +1,27 @@
+const { ObjectId } = require('mongodb');
 var db = require('../config/connection');
 var collection=require('../config/collections')
 
+const products = () => db.get().collection(collection.PRODUCT_COLLECTION)
+
 module.exports = {
-  addProduct: (product, callback) => {
-    console.log(product);
-    db.get().collection('product').insertOne(product)
-      .then((data) => {
-        callback(data.insertedId);  // ✅ Use insertedId instead of data.ops[0]._id
-      })
-      .catch((err) => {
-        console.error("Error inserting product:", err);
-        callback(null);  // You may want to handle errors in your route
-      });
+  addProduct: async (product) => {
+    const result = await products().insertOne(product)
+    return result.insertedId
   },
-  getAllProducts:()=>{
-    return new Promise(async(resolve,reject)=>{
-      let products=await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
-      resolve(products)
-    })
+  getAllProducts: () => {
+    return products().find().toArray()
+  },
+  getProduct: (productId) => {
+    return products().findOne({ _id: new ObjectId(productId) })
+  },
+  updateProduct: (productId, details) => {
+    return products().updateOne({ _id: new ObjectId(productId) }, { $set: details })
+  },
+  deleteProduct: async (productId) => {
+    const id = new ObjectId(productId)
+    await products().deleteOne({ _id: id })
+    // remove the deleted product from every cart
+    await db.get().collection(collection.CART_COLLECTION).updateMany({}, { $pull: { products: { item: id } } })
   }
 };
